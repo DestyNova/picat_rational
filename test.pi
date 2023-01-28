@@ -1,0 +1,21 @@
+import fixedpoint.
+
+main =>
+  A1 = new_fixedpoint(64,32), % 2
+  A2 = new_fixedpoint(100,20), % 5
+
+  assert_eq("add", add(A1, A2).fixed_to_float, 7.0),
+  assert_eq("subtract", sub(A1, A2).fixed_to_float, -3.0),
+  assert_eq("multiply", mul(A1, A2).fixed_to_float, 10.0),
+  assert_eq("divide", divf(A2, A1).fixed_to_float, 2.5),
+  assert_eq("stringify a number with no decimal part", A1.stringify(0), "2"),
+  println("Tests passed.").
+
+assert_eq(Msg,A,B) =>
+  printf("TEST %-60s ", Msg),
+  if A != B then
+    printf("FAIL\nExpected %w but was %w.\n", B, A),
+    fail
+  else
+    println("OK")
+  end.

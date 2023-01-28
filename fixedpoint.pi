@@ -1,0 +1,37 @@
+module fixedpoint.
+
+import util.
+
+% Recursively apply the function F to X until the result converges (i.e. F(X) == X)
+converge(X,F,R), Y = apply(F,X), eq(X,Y) => R = X.
+converge(X,F,R) => converge(apply(F,X),F,R).
+
+% Fixed point (arbitrary-precision rational) arithmetic!
+new_fixedpoint(N,Scaling) = $fixed_point(A,B) =>
+  S = gcd(N, Scaling),
+  A = N // S,
+  B = Scaling // S.
+
+add(fixed_point(A,S_a), fixed_point(B,S_b)) = new_fixedpoint(A*S_b+B*S_a, S_a*S_b).
+sub(fixed_point(A,S_a), fixed_point(B,S_b)) = new_fixedpoint(A*S_b-B*S_a, S_a*S_b).
+mul(fixed_point(A,S_a), fixed_point(B,S_b)) = new_fixedpoint(A*B, S_a*S_b).
+divf(fixed_point(A,S_a), fixed_point(B,S_b)) = new_fixedpoint(A*S_b, S_a*B). % lame, can't use div/2 :(
+eq(fixed_point(A,S_a), fixed_point(B,S_b)) =>
+  X = A*S_b,
+  Y = B*S_a,
+  X = Y.
+
+floor_fixed(fixed_point(A,S_a)) = A // S_a.
+
+% Produce string representation of a fixed-point value with a specified precision (digits after the decimal)
+stringify(fixed_point(A,Sf), 0) = R => R = (A // Sf).to_string.
+stringify(fixed_point(A,Sf), Precision) = R, Precision > 0 =>
+  X = (A * 10**(Precision+1) // Sf),
+  M = cond(X mod 10 > 4, X // 10 + 1, X // 10).to_string,
+  println(x=X),
+  println(m=M),
+  N = A // Sf,
+  Int_size = cond(N == 0, 0, floor(log10(N.abs)+1)),
+  R = cond(A < 0, "-", "") ++ cond(Int_size == 0, "0", M.take(Int_size)) ++ "." ++ M.drop(Int_size).
+
+fixed_to_float(fixed_point(A,Sf)) = A / Sf.
