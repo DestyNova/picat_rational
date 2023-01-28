@@ -24,14 +24,14 @@ eq(fixed_point(A,S_a), fixed_point(B,S_b)) =>
 floor_fixed(fixed_point(A,S_a)) = A // S_a.
 
 % Produce string representation of a fixed-point value with a specified precision (digits after the decimal)
-stringify(fixed_point(A,Sf), 0) = R => R = (A // Sf).to_string.
-stringify(fixed_point(A,Sf), Precision) = R, Precision > 0 =>
+stringify(fixed_point(A,Sf), Precision) = R, Precision >= 0 =>
   X = (A * 10**(Precision+1) // Sf),
-  M = cond(X mod 10 > 4, X // 10 + 1, X // 10).to_string,
-  println(x=X),
-  println(m=M),
+  Y = cond(X mod 10 > 4, X // 10 + 1, X // 10),
+  M = Y.to_string,
   N = A // Sf,
-  Int_size = cond(N == 0, 0, floor(log10(N.abs)+1)),
-  R = cond(A < 0, "-", "") ++ cond(Int_size == 0, "0", M.take(Int_size)) ++ "." ++ M.drop(Int_size).
+  Int_size = cond(N == 0, 0, floor(log10(Y.abs // 10**Precision)+1)),
+  Int_part = cond(A < 0, "-", "") ++ cond(Int_size == 0, "0", M.take(Int_size)),
+  Decimal_part = M.drop(Int_size),
+  R = Int_part ++ cond(Decimal_part.len == 0, "", "." ++ Decimal_part).
 
 fixed_to_float(fixed_point(A,Sf)) = A / Sf.
