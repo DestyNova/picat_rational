@@ -1,6 +1,6 @@
 ## picat-fixedpoint
 
-A tiny library for doing fixed-point (i.e. arbitrary-precision rational) in Picat. I found it handy for at least one Project Euler puzzle requiring many floating point digits.
+A tiny library for doing fixed-point (i.e. arbitrary-precision rational) in [Picat](http://picat-lang.org). I found it handy for at least one Project Euler puzzle requiring many floating point digits.
 
 Operations supported: new_fixedpoint, add, sub, mul, divf, floor_fixed, stringify. Maybe others in future. See `test.pi` for some basic usage examples.
 
