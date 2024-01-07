@@ -1,15 +1,15 @@
-import fixedpoint.
+import rational.
 
 main =>
-  A1 = new_fixedpoint(64,32), % 2
-  A2 = new_fixedpoint(100,20), % 5
-  Long_num = new_fixedpoint(999888777666555444333222111, 10**26),
-  Long_num2 = new_fixedpoint(999888777666555444333222111, 1),
+  A1 = new_rational(64,32), % 2
+  A2 = new_rational(100,20), % 5
+  Long_num = new_rational(999888777666555444333222111, 10**26),
+  Long_num2 = new_rational(999888777666555444333222111, 1),
 
-  assert_eq("add", add(A1, A2).fixed_to_float, 7.0),
-  assert_eq("subtract", sub(A1, A2).fixed_to_float, -3.0),
-  assert_eq("multiply", mul(A1, A2).fixed_to_float, 10.0),
-  assert_eq("divide", divf(A2, A1).fixed_to_float, 2.5),
+  assert_eq("add", add(A1, A2).rational_to_float, 7.0),
+  assert_eq("subtract", sub(A1, A2).rational_to_float, -3.0),
+  assert_eq("multiply", mul(A1, A2).rational_to_float, 10.0),
+  assert_eq("divide", divf(A2, A1).rational_to_float, 2.5),
   assert_eq("stringify a number with no decimal part", A1.stringify(0), "2"),
   assert_eq("stringify a number with many decimals", Long_num.stringify(26), "9.99888777666555444333222111"),
   assert_eq("stringify and truncate a long number", Long_num.stringify(3), "9.999"),
